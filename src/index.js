@@ -5,6 +5,7 @@ const methodOverride = require("method-override");
 const session = require("express-session");
 
 const app = express();
+require("./database");
 
 app.set("port", process.env.PORT || 3000);
 app.set("views", path.join(__dirname, "views"));
@@ -29,6 +30,12 @@ app.use(
     saveUninitialized: true,
   })
 );
+
+app.use(require("./routes/index"));
+app.use(require("./routes/notes"));
+app.use(require("./routes/users"));
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.listen(app.get("port"), () => {
   console.log("Server running on port ", app.get("port"));
