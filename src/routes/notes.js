@@ -23,12 +23,33 @@ router.post("/notes/new-note", async (req, res) => {
   } else {
     const NewNote = new Note({ title, body });
     await NewNote.save();
+    req.flash("successMsg", "Note Added!");
     res.redirect("/notes");
   }
 });
 
-router.get("/notes", (req, res) => {
-  res.send("Your notes");
+router.get("/notes", async (req, res) => {
+  const notesList = await Note.find({}).lean().sort({ date: "desc" });
+  res.render("notes/all-notes", { notesList });
+});
+
+router.get("/notes/edit/:id", async (req, res) => {
+  const note = await Note.findById(req.params.id).lean();
+  res.render("notes/edit-note", { note });
+});
+
+router.put("/notes/edit-note/:id", async (req, res) => {
+  const { title, body } = req.body;
+  await Note.findByIdAndUpdate(req.params.id, { title, body });
+  req.flash("successMsg", "Your note has been updated!");
+  res.redirect("/notes");
+});
+
+router.delete("/notes/delete/:id", async (req, res) => {
+  console.log(req.params.id);
+  await Note.findByIdAndDelete(req.params.id);
+  req.flash("successMsg", "Note removed!");
+  res.redirect("/notes");
 });
 
 module.exports = router;

@@ -1,0 +1,23 @@
+<div class="col-md-4 mx-auto">
+    <div class="card">
+        <div class="card-header">
+            <h3>Edit note</h3>
+        </div>
+        <div class="card-body">
+            <form action="/notes/edit-note/{{note._id}}?_method=PUT" method="POST">
+                <input type="hidden" name="_method" value="PUT"/>
+                <div class="mb-4">
+                    <input type="text" class="form-control" name="title" placeholder="title" value={{note.title}}/>
+                </div>
+                <div class="mb-4">
+                    <textarea name="body" class="form-control">{{note.body}}</textarea>
+                </div>
+                <div class="mb-4">
+                    <div class="d-grid gap-2">
+                        <button class="btn btn-primary" type="submit">Save changes</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
